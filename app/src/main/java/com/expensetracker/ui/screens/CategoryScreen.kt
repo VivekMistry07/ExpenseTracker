@@ -41,6 +41,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -136,17 +137,18 @@ fun CategoryScreen(
         )
     }
 
-    categoryToDelete?.let { cat ->
+    val catToDelete = categoryToDelete
+    if (catToDelete != null) {
         AlertDialog(
             onDismissRequest = { categoryToDelete = null },
             title = { Text("Delete Category") },
             text = {
-                Text("Are you sure you want to delete \"${cat.name}\"? Any transactions attached to this category will also be deleted.")
+                Text("Are you sure you want to delete \"${catToDelete.name}\"? Any transactions attached to this category will also be deleted.")
             },
             confirmButton = {
                 TextButton(
                     onClick = {
-                        viewModel.deleteCategory(cat)
+                        viewModel.deleteCategory(catToDelete)
                         categoryToDelete = null
                     }
                 ) {
